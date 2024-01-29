@@ -1,3 +1,4 @@
+//package moviesapp.controller;
 package moviesapp.controller;
 
 import javafx.fxml.FXML;
