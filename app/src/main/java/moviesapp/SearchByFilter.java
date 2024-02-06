@@ -44,7 +44,6 @@ public class SearchByFilter {
         OkHttpClient client = new OkHttpClient();
         List<String> movieTitles = new ArrayList<>();
 
-        // Convert genre names to IDs and join with commas
         String genreIds = Arrays.stream(genres)
                 .map(genre -> genreMap.getOrDefault(genre, -1).toString())
                 .filter(id -> !id.equals("-1"))
@@ -87,7 +86,6 @@ public class SearchByFilter {
     }
 
     public static void main(String[] args) {
-        // Example usage
         List<String> movieTitles = searchMoviesByGenres(new String[]{"Action", "Science-Fiction"});
         if (!movieTitles.isEmpty()) {
             System.out.println(movieTitles);
