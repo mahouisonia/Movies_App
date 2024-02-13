@@ -17,27 +17,28 @@ import java.util.stream.Collectors;
 public class SearchByFilter {
 
     private static final Map<String, Integer> genreMap = new HashMap<>();
+    private static final String API_KEY = "f1777d5efc77db9afe972a45e8263775";
 
     static {
-        genreMap.put("Action", 28);
-        genreMap.put("Aventure", 12);
-        genreMap.put("Animation", 16);
-        genreMap.put("Comédie", 35);
-        genreMap.put("Crime", 80);
-        genreMap.put("Documentaire", 99);
-        genreMap.put("Drame", 18);
-        genreMap.put("Famille", 10751);
-        genreMap.put("Fantaisie", 14);
-        genreMap.put("Histoire", 36);
-        genreMap.put("Horreur", 27);
-        genreMap.put("Musique", 10402);
-        genreMap.put("Mystère", 9648);
-        genreMap.put("Romance", 10749);
-        genreMap.put("Science-Fiction", 878);
-        genreMap.put("Téléfilm", 10770);
-        genreMap.put("Thriller", 53);
-        genreMap.put("Guerre", 10752);
-        genreMap.put("Western", 37);
+        genreMap.put("action", 28);
+        genreMap.put("aventure", 12);
+        genreMap.put("animation", 16);
+        genreMap.put("comédie", 35);
+        genreMap.put("crime", 80);
+        genreMap.put("documentaire", 99);
+        genreMap.put("drame", 18);
+        genreMap.put("famille", 10751);
+        genreMap.put("fantaisie", 14);
+        genreMap.put("histoire", 36);
+        genreMap.put("horreur", 27);
+        genreMap.put("musique", 10402);
+        genreMap.put("mystère", 9648);
+        genreMap.put("romance", 10749);
+        genreMap.put("science-fiction", 878);
+        genreMap.put("téléfilm", 10770);
+        genreMap.put("thriller", 53);
+        genreMap.put("guerre", 10752);
+        genreMap.put("western", 37);
     }
 
     public static List<String> searchMoviesByGenres(String[] genres) {
@@ -45,6 +46,7 @@ public class SearchByFilter {
         List<String> movieTitles = new ArrayList<>();
 
         String genreIds = Arrays.stream(genres)
+                .map(String::toLowerCase)
                 .map(genre -> genreMap.getOrDefault(genre, -1).toString())
                 .filter(id -> !id.equals("-1"))
                 .collect(Collectors.joining(","));
@@ -54,18 +56,17 @@ public class SearchByFilter {
             return movieTitles;
         }
 
-        String url = "https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_genres=" + genreIds;
+        String url = "https://api.themoviedb.org/3/discover/movie?api_key=" + API_KEY +
+                "&include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_genres=" + genreIds;
 
         Request request = new Request.Builder()
                 .url(url)
                 .get()
                 .addHeader("accept", "application/json")
-                .addHeader("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyYjk2YTUzY2ZhNmI1ZTViNDJmYTcwMzQ2M2U1YTcyYyIsInN1YiI6IjY1YjdiNGM2OGNmY2M3MDE3Y2U2ODJkMiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.KKauoZO7myG0aSb77vxBl2kOnAREFmBMXyEqXVfWVbY") // Replace YOUR_ACCESS_TOKEN with your actual access token
                 .build();
 
         try {
             Response response = client.newCall(request).execute();
-
             if (response.isSuccessful() && response.body() != null) {
                 String responseBody = response.body().string();
                 JSONObject jsonObject = new JSONObject(responseBody);
@@ -77,7 +78,6 @@ public class SearchByFilter {
             } else {
                 System.out.println("La requête n'a pas réussi");
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -86,7 +86,7 @@ public class SearchByFilter {
     }
 
     public static void main(String[] args) {
-        List<String> movieTitles = searchMoviesByGenres(new String[]{"Action", "Science-Fiction"});
+        List<String> movieTitles = searchMoviesByGenres(new String[]{"Action", "science-fiction"});
         if (!movieTitles.isEmpty()) {
             System.out.println(movieTitles);
         } else {
