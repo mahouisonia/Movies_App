@@ -15,7 +15,7 @@ public class AppCLI {
             System.out.println("\nWelcome to the Movies App");
             System.out.println("Please select a command:");
             System.out.println("1: Search for a movie by name");
-            System.out.println("2: Search for movies by genres");
+            System.out.println("2: Search for movies by filters");
             System.out.println("3: View favorites");
             System.out.println("4: Quit");
             System.out.print("Enter your choice: ");
@@ -51,7 +51,6 @@ public class AppCLI {
                         } else {
                             System.out.println("This movie is already in your favorites.");
                         }
-
                     } else {
                         System.out.println("No results found for '" + movieName + "'.");
                     }
@@ -60,12 +59,26 @@ public class AppCLI {
                     System.out.println("Enter genres separated by commas (e.g., Action,Comedy): ");
                     String genreInput = scanner.nextLine();
                     String[] genres = genreInput.split(",");
-                    List<String> movieTitles = SearchByFilter.searchMoviesByGenres(genres);
+                    System.out.print("Do you want to add a specific release year to your search? (yes/no): ");
+                    String yearDecision = scanner.nextLine().trim();
+
+                    Integer releaseYear = null;
+                    if ("yes".equalsIgnoreCase(yearDecision)) {
+                        System.out.print("Enter the release year: ");
+                        String yearInput = scanner.nextLine().trim();
+                        try {
+                            releaseYear = Integer.parseInt(yearInput);
+                        } catch (NumberFormatException e) {
+                            System.out.println("Invalid year format. Proceeding without year filter.");
+                        }
+                    }
+
+                    List<String> movieTitles = SearchByFilter.searchMoviesByGenres(genres, releaseYear);
                     if (!movieTitles.isEmpty()) {
                         System.out.println("Movies found: ");
                         movieTitles.forEach(System.out::println);
                     } else {
-                        System.out.println("No results found for genres: " + genreInput);
+                        System.out.println("No results found for genres: " + genreInput + (releaseYear != null ? " in " + releaseYear : ""));
                     }
                     break;
                 case 3:
@@ -73,7 +86,9 @@ public class AppCLI {
                         System.out.println("Your favorites list is empty.");
                     } else {
                         System.out.println("Your favorites:");
-                        favorites.forEach(AppCLI::displayMovieDetails);
+                        for (JSONObject fav : favorites) {
+                            displayMovieDetails(fav);
+                        }
                     }
                     break;
                 case 4:
@@ -99,9 +114,9 @@ public class AppCLI {
     private static boolean isFavorite(JSONObject movie) {
         for (JSONObject favorite : favorites) {
             if (favorite.optString("title").equals(movie.optString("title"))) {
-                return true; // Movie is already in favorites
+                return true;
             }
         }
-        return false; // Movie is not in favorites
+        return false;
     }
 }
