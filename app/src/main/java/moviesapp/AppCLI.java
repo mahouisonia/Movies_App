@@ -167,10 +167,21 @@ public class AppCLI {
         }
     }
 
+//    private static void viewFavorites() {
+//        System.out.println("Your favorites:");
+//        usersManager.getCurrentUser().getFavorites().forEach(favorite -> displayMovieDetails((JSONObject) favorite));
+//    }
+
     private static void viewFavorites() {
-        System.out.println("Your favorites:");
-        usersManager.getCurrentUser().getFavorites().forEach(favorite -> displayMovieDetails((JSONObject) favorite));
+        if (usersManager.getCurrentUser().getFavorites().isEmpty()) {
+            System.out.println("You have no favorite movies");
+        } else {
+            System.out.println("Your favorites:");
+            usersManager.getCurrentUser().getFavorites()
+                    .forEach(favorite -> displayMovieDetails((JSONObject) favorite));
+        }
     }
+
 
     private static void displayMovieDetails(JSONObject movie) {
         System.out.println("-------------------------------------------------");
