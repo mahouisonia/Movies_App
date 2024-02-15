@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public class SearchByFilter {
 
     private static final Map<String, Integer> genreMap = new HashMap<>();
-    private static final String API_KEY = "f1777d5efc77db9afe972a45e8263775";
+    private static final String API_KEY = "f1777d5efc77db9afe972a45e8263775"; // Make sure to use your actual API key
 
     static {
         genreMap.put("action", 28);
@@ -41,13 +41,7 @@ public class SearchByFilter {
         genreMap.put("western", 37);
     }
 
-    // Original method signature, kept for compatibility
-    public static List<String> searchMoviesByGenres(String[] genres) {
-        return searchMoviesByGenres(genres, null); // Call the overloaded method without release year
-    }
-
-    // Overloaded method to include optional release year
-    public static List<String> searchMoviesByGenres(String[] genres, Integer releaseYear) {
+    public static List<String> searchMoviesByGenres(String[] genres, Integer releaseYear, Double minimumRating) {
         OkHttpClient client = new OkHttpClient();
         List<String> movieTitles = new ArrayList<>();
 
@@ -58,16 +52,19 @@ public class SearchByFilter {
                 .collect(Collectors.joining(","));
 
         if (genreIds.isEmpty()) {
-            System.out.println("Genres non trouvés");
+            System.out.println("Genres not found");
             return movieTitles;
         }
 
         String url = "https://api.themoviedb.org/3/discover/movie?api_key=" + API_KEY +
                 "&include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_genres=" + genreIds;
 
-        // Add the release year to the URL if provided
         if (releaseYear != null) {
             url += "&primary_release_year=" + releaseYear;
+        }
+
+        if (minimumRating != null) {
+            url += "&vote_average.gte=" + minimumRating;
         }
 
         Request request = new Request.Builder()
@@ -87,7 +84,7 @@ public class SearchByFilter {
                     movieTitles.add(movie.getString("title"));
                 }
             } else {
-                System.out.println("La requête n'a pas réussi");
+                System.out.println("Request failed");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -96,13 +93,24 @@ public class SearchByFilter {
         return movieTitles;
     }
 
-    public static void main(String[] args) {
-        // Example usage without release year
-        List<String> movieTitles = searchMoviesByGenres(new String[]{"Action", "science-fiction"});
-        System.out.println("Movies by Genres: " + movieTitles);
+    // Overloaded methods for backward compatibility and varied use cases
+    public static List<String> searchMoviesByGenres(String[] genres) {
+        return searchMoviesByGenres(genres, null, null);
+    }
 
-        // Example usage with release year
+    public static List<String> searchMoviesByGenres(String[] genres, Integer releaseYear) {
+        return searchMoviesByGenres(genres, releaseYear, null);
+    }
+
+    // Example usage in the main method for testing
+    public static void main(String[] args) {
+        List<String> moviesByGenres = searchMoviesByGenres(new String[]{"Action", "science-fiction"});
+        System.out.println("Movies by Genres: " + moviesByGenres);
+
         List<String> moviesByGenresAndYear = searchMoviesByGenres(new String[]{"Action", "science-fiction"}, 2012);
         System.out.println("Movies by Genres and Year: " + moviesByGenresAndYear);
+
+        List<String> moviesByGenresYearAndRating = searchMoviesByGenres(new String[]{"Action", "science-fiction"}, 2012, 8.0);
+        System.out.println("Movies by Genres, Year, and Minimum Rating: " + moviesByGenresYearAndRating);
     }
 }
