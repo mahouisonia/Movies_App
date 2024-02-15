@@ -81,6 +81,31 @@ public class AppCLI {
                 break;
             case "3":
                 viewFavorites();
+                if (usersManager.getCurrentUser().getFavorites().isEmpty()) {
+                    break;
+                }
+                System.out.print("Would you like to delete a movie from your favorites? (yes/no): ");
+                String addToFavorites = scanner.nextLine().trim();
+                if ("no".equalsIgnoreCase(addToFavorites)) {
+                   break;
+                }
+                if("yes".equalsIgnoreCase(addToFavorites)){
+                    System.out.println("Choose the movie to delete from favorite: ");
+                    int fav_count = usersManager.getCurrentUser().getFavorites().length();
+                    for(int i=0;i<fav_count;i++){
+                        JSONObject favorite = usersManager.getCurrentUser().getFavorites().getJSONObject(i);
+                        String movie = favorite.getString("title");
+                        System.out.println(i + ") " + movie);
+                    }
+                    int movieToDelete = scanner.nextInt();
+                    if (movieToDelete >= 0 && movieToDelete < fav_count) {
+                        usersManager.getCurrentUser().getFavorites().remove(movieToDelete);
+                        System.out.println("Movie removed from favorites successfully.");
+                    } else {
+                        System.out.println("Invalid movie number. Please enter a valid number.");
+                    }
+                    usersManager.saveUsersData();
+                }
                 break;
             case "4": // Logout
                 usersManager.logoutUser();
@@ -114,7 +139,8 @@ public class AppCLI {
             } else {
                 System.out.println("This movie is already in your favorites.");
             }
-        } else {
+        }
+        else {
             System.out.println("No results found for '" + movieName + "'.");
         }
     }
@@ -166,11 +192,6 @@ public class AppCLI {
                     (minimumRating != null ? " with minimum rating " + minimumRating : ""));
         }
     }
-
-//    private static void viewFavorites() {
-//        System.out.println("Your favorites:");
-//        usersManager.getCurrentUser().getFavorites().forEach(favorite -> displayMovieDetails((JSONObject) favorite));
-//    }
 
     private static void viewFavorites() {
         if (usersManager.getCurrentUser().getFavorites().isEmpty()) {
