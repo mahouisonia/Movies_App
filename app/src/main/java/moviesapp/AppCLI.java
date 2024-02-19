@@ -17,7 +17,8 @@ public class AppCLI {
                 System.out.println("Please select a command:");
                 System.out.println("1: Register");
                 System.out.println("2: Login");
-                System.out.println("3: Quit");
+                System.out.println("3: Forgot password");
+                System.out.println("4: Quit");
                 System.out.print("Enter your choice: ");
                 String authChoice = scanner.nextLine();
                 handleUserAuthentication(authChoice, scanner);
@@ -61,7 +62,18 @@ public class AppCLI {
                     System.out.println("Login failed. Please check your username and password.");
                 }
                 break;
-            case "3": // Quit
+
+            case "3": // Forgot Password
+                System.out.print("Enter your username: ");
+                username = scanner.nextLine();
+                if (usersManager.isUserExists(username)) {
+                    System.out.println("Your password is: " + usersManager.getpassword(username));
+                } else {
+                    System.out.println("Username does not exist. Please enter a valid username.");
+                }
+                break;
+
+            case "4": // Quit
                 System.out.println("Quitting the application. Goodbye!");
                 System.exit(0);
                 break;

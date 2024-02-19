@@ -66,6 +66,27 @@ public class UsersManager {
         return false;
     }
 
+    public boolean isUserExists(String username) {
+        for (int i = 0; i < users.length(); i++) {
+            JSONObject userJson = users.getJSONObject(i);
+            if (userJson.getString("username").equals(username)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public String getpassword (String username) {
+        for (int i = 0; i < users.length(); i++) {
+            JSONObject userJson = users.getJSONObject(i);
+            if (userJson.getString("username").equals(username)) {
+                return userJson.getString("password");
+            }
+        }
+        return null;
+    }
+
+
     public User getCurrentUser() {
         return currentUser;
     }
