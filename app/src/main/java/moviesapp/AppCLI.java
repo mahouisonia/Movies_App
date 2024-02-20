@@ -162,10 +162,19 @@ public class AppCLI {
     }
 
     private static void searchForMoviesByFilters(Scanner scanner) {
+        System.out.println("Do you want to specify a genre for the movies? ");
+        String genreDecision = scanner.nextLine().trim();
+        String[] genres = {};
+        String genreInput=null;
+        if("yes".equalsIgnoreCase(genreDecision)){
+            System.out.println("enter genres separated by commas (e.g., Action,Comedy):");
+            genreInput = scanner.nextLine().trim();
+            genres = genreInput.split(",");
+        }
 
-        System.out.println("Enter genres separated by commas (e.g., Action,Comedy): ");
-        String genreInput = scanner.nextLine();
-        String[] genres = genreInput.split(",");
+
+        //String genreInput = scanner.nextLine();
+        //String[] genres = genreInput.split(",");
 
         System.out.print("Do you want to add a specific release year to your search? (yes/no): ");
         String yearDecision = scanner.nextLine().trim();
