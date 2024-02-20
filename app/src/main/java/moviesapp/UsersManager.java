@@ -54,6 +54,16 @@ public class UsersManager {
         return true;
     }
 
+    public boolean resetPassword(String username, String password) {
+        for (int i = 0; i < users.length(); i++) {
+            JSONObject userJson = users.getJSONObject(i);
+            if (userJson.getString("username").equals(username)) {
+                userJson.put("password",password);
+            }
+        }
+        return true;
+    }
+
     public boolean loginUser(String username, String password) {
         for (int i = 0; i < users.length(); i++) {
             JSONObject userJson = users.getJSONObject(i);
