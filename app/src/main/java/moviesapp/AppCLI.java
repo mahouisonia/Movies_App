@@ -180,7 +180,7 @@ public class AppCLI {
             }
         }
 
-        Double minimumRating = null; // Variable to hold the minimum rating
+        Double minimumRating = null;
         System.out.print("Do you want to specify a minimum rating for the movies? (yes/no): ");
         String ratingDecision = scanner.nextLine().trim();
         if ("yes".equalsIgnoreCase(ratingDecision)) {
@@ -190,24 +190,33 @@ public class AppCLI {
                 minimumRating = Double.parseDouble(ratingInput);
                 if (minimumRating < 1 || minimumRating > 10) {
                     System.out.println("Rating must be between 1 and 10. Proceeding without rating filter.");
-                    minimumRating = null; // Ignore invalid input
+                    minimumRating = null;
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Invalid rating format. Proceeding without rating filter.");
             }
         }
 
-        // Assuming you modify the searchMoviesByGenres method to accept a minimum rating as an argument
-        List<String> movieTitles = SearchByFilter.searchMoviesByGenres(genres, releaseYear, minimumRating);
+        // New section for actor name
+        String actorName = null;
+        System.out.print("Do you want to search for movies with a specific actor? (yes/no): ");
+        String actorDecision = scanner.nextLine().trim();
+        if ("yes".equalsIgnoreCase(actorDecision)) {
+            System.out.print("Enter the actor's name: ");
+            actorName = scanner.nextLine().trim();
+        }
+
+        // Assuming you modify the searchMoviesByGenres method to accept actor name as an argument
+        // The method call below is an example, you need to implement or modify the method accordingly
+        List<String> movieTitles = SearchByFilter.searchMoviesByGenres(genres, releaseYear, minimumRating, actorName);
         if (!movieTitles.isEmpty()) {
             System.out.println("Movies found: ");
             movieTitles.forEach(System.out::println);
         } else {
-            System.out.println("No results found for genres: " + genreInput +
-                    (releaseYear != null ? " in " + releaseYear : "") +
-                    (minimumRating != null ? " with minimum rating " + minimumRating : ""));
+            System.out.println("No results found for the specified filters.");
         }
     }
+
 
     private static void viewFavorites() {
         if (usersManager.getCurrentUser().getFavorites().isEmpty()) {
