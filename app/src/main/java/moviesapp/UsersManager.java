@@ -54,6 +54,16 @@ public class UsersManager {
         return true;
     }
 
+    public boolean resetPassword(String username, String password) {
+        for (int i = 0; i < users.length(); i++) {
+            JSONObject userJson = users.getJSONObject(i);
+            if (userJson.getString("username").equals(username)) {
+                userJson.put("password",password);
+            }
+        }
+        return true;
+    }
+
     public boolean loginUser(String username, String password) {
         for (int i = 0; i < users.length(); i++) {
             JSONObject userJson = users.getJSONObject(i);
@@ -65,6 +75,27 @@ public class UsersManager {
         System.out.println("Login failed. Username or password is incorrect.");
         return false;
     }
+
+    public boolean isUserExists(String username) {
+        for (int i = 0; i < users.length(); i++) {
+            JSONObject userJson = users.getJSONObject(i);
+            if (userJson.getString("username").equals(username)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public String getpassword (String username) {
+        for (int i = 0; i < users.length(); i++) {
+            JSONObject userJson = users.getJSONObject(i);
+            if (userJson.getString("username").equals(username)) {
+                return userJson.getString("password");
+            }
+        }
+        return null;
+    }
+
 
     public User getCurrentUser() {
         return currentUser;
