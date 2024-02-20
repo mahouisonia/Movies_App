@@ -162,6 +162,9 @@ public class AppCLI {
     }
 
     private static void searchForMoviesByFilters(Scanner scanner) {
+       System.out.print("Do you want to add a specific release year to your search? (yes/no): ");
+
+
         System.out.println("Enter genres separated by commas (e.g., Action,Comedy): ");
         String genreInput = scanner.nextLine();
         String[] genres = genreInput.split(",");
