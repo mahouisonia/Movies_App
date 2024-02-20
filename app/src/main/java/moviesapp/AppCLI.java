@@ -67,7 +67,7 @@ public class AppCLI {
                 System.out.print("Enter your username: ");
                 username = scanner.nextLine();
                 if (usersManager.isUserExists(username)) {
-                    System.out.println("Enter a new password : ");
+                    System.out.print("Enter a new password : ");
                     password = scanner.nextLine();
                     if(usersManager.resetPassword(username,password)){
                        System.out.println("password reseted successfully");
