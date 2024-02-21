@@ -162,7 +162,7 @@ public class AppCLI {
     }
 
     private static void searchForMoviesByFilters(Scanner scanner) {
-        System.out.println("Do you want to specify a genre for the movies? ");
+        System.out.println("Do you want to specify a genre for the movies? (yes/no): ");
         String genreDecision = scanner.nextLine().trim();
         String[] genres = {};
         String genreInput=null;
@@ -171,10 +171,6 @@ public class AppCLI {
             genreInput = scanner.nextLine().trim();
             genres = genreInput.split(",");
         }
-
-
-        //String genreInput = scanner.nextLine();
-        //String[] genres = genreInput.split(",");
 
         System.out.print("Do you want to add a specific release year to your search? (yes/no): ");
         String yearDecision = scanner.nextLine().trim();
@@ -213,9 +209,7 @@ public class AppCLI {
             System.out.println("Movies found: ");
             movieTitles.forEach(System.out::println);
         } else {
-            System.out.println("No results found for genres: " + genreInput +
-                    (releaseYear != null ? " in " + releaseYear : "") +
-                    (minimumRating != null ? " with minimum rating " + minimumRating : ""));
+            System.out.println("No results found for the specified filters!" );
         }
     }
 

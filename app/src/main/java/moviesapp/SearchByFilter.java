@@ -52,7 +52,6 @@ public class SearchByFilter {
                 .collect(Collectors.joining(","));
 
         if (genreIds.isEmpty()) {
-            System.out.println("Genres not found");
             return movieTitles;
         }
 
