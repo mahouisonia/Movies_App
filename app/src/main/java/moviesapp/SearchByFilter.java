@@ -41,30 +41,10 @@ public class SearchByFilter {
         genreMap.put("western", 37);
     }
 
-    public static List<String> searchMoviesByGenres(String[] genres, Integer releaseYear, Double minimumRating) {
+    private static String findActorIdByName(String actorName) throws IOException {
         OkHttpClient client = new OkHttpClient();
-        List<String> movieTitles = new ArrayList<>();
-
-        String genreIds = Arrays.stream(genres)
-                .map(String::toLowerCase)
-                .map(genre -> genreMap.getOrDefault(genre, -1).toString())
-                .filter(id -> !id.equals("-1"))
-                .collect(Collectors.joining(","));
-
-        if (genreIds.isEmpty()) {
-            return movieTitles;
-        }
-
-        String url = "https://api.themoviedb.org/3/discover/movie?api_key=" + API_KEY +
-                "&include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_genres=" + genreIds;
-
-        if (releaseYear != null) {
-            url += "&primary_release_year=" + releaseYear;
-        }
-
-        if (minimumRating != null) {
-            url += "&vote_average.gte=" + minimumRating;
-        }
+        String url = "https://api.themoviedb.org/3/search/person?api_key=" + API_KEY +
+                "&language=en-US&page=1&include_adult=false&query=" + actorName.replace(" ", "%20");
 
         Request request = new Request.Builder()
                 .url(url)
@@ -72,44 +52,115 @@ public class SearchByFilter {
                 .addHeader("accept", "application/json")
                 .build();
 
-        try {
-            Response response = client.newCall(request).execute();
+        try (Response response = client.newCall(request).execute()) {
             if (response.isSuccessful() && response.body() != null) {
                 String responseBody = response.body().string();
                 JSONObject jsonObject = new JSONObject(responseBody);
                 JSONArray results = jsonObject.getJSONArray("results");
-                for (int i = 0; i < results.length(); i++) {
-                    JSONObject movie = results.getJSONObject(i);
-                    movieTitles.add(movie.getString("title"));
+                if (results.length() > 0) {
+                    // Use getInt to get the actor's ID as an integer
+                    int actorId = results.getJSONObject(0).getInt("id");
+                    // Return the ID as a string
+                    return String.valueOf(actorId);
                 }
-            } else {
-                System.out.println("Request failed");
+            }
+        }
+        return null; // Return null if the actor is not found or in case of failure
+    }
+
+
+
+    public static List<String> searchMoviesByGenres(String[] genres, Integer releaseYear, Double minimumRating, String actorName) {
+        List<String> movieTitles = new ArrayList<>();
+        try {
+            String actorId = actorName != null ? findActorIdByName(actorName) : null;
+            if (actorName != null && actorId == null) {
+                System.out.println("Actor not found");
+                return movieTitles;
+            }
+
+            OkHttpClient client = new OkHttpClient();
+            String genreIds = Arrays.stream(genres)
+                    .map(String::toLowerCase)
+                    .map(genre -> genreMap.getOrDefault(genre, -1).toString())
+                    .filter(id -> !id.equals("-1"))
+                    .collect(Collectors.joining(","));
+
+            if (genreIds.isEmpty()) {
+                System.out.println("Genres not found");
+                return movieTitles;
+            }
+
+            String url = "https://api.themoviedb.org/3/discover/movie?api_key=" + API_KEY +
+                    "&include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_genres=" + genreIds;
+
+            if (releaseYear != null) {
+                url += "&primary_release_year=" + releaseYear;
+            }
+
+            if (minimumRating != null) {
+                url += "&vote_average.gte=" + minimumRating;
+            }
+
+            if (actorId != null) {
+                url += "&with_cast=" + actorId;
+            }
+
+            Request request = new Request.Builder()
+                    .url(url)
+                    .get()
+                    .addHeader("accept", "application/json")
+                    .build();
+
+            try (Response response = client.newCall(request).execute()) {
+                if (response.isSuccessful() && response.body() != null) {
+                    String responseBody = response.body().string();
+                    JSONObject jsonObject = new JSONObject(responseBody);
+                    JSONArray results = jsonObject.getJSONArray("results");
+                    for (int i = 0; i < results.length(); i++) {
+                        JSONObject movie = results.getJSONObject(i);
+                        movieTitles.add(movie.getString("title"));
+                    }
+                } else {
+                    System.out.println("Request failed");
+                }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("An error occurred while searching for movies: " + e.getMessage());
         }
-
         return movieTitles;
     }
 
+
     // Overloaded methods for backward compatibility and varied use cases
     public static List<String> searchMoviesByGenres(String[] genres) {
-        return searchMoviesByGenres(genres, null, null);
+        return searchMoviesByGenres(genres, null, null, null); // Updated to match the new method signature
     }
 
     public static List<String> searchMoviesByGenres(String[] genres, Integer releaseYear) {
-        return searchMoviesByGenres(genres, releaseYear, null);
+        return searchMoviesByGenres(genres, releaseYear, null, null); // Updated to match the new method signature
     }
+
+    public static List<String> searchMoviesByGenres(String[] genres, Integer releaseYear, Double minimumRating) {
+        return searchMoviesByGenres(genres, releaseYear, minimumRating, null); // This matches the full method signature
+    }
+
+
 
     // Example usage in the main method for testing
     public static void main(String[] args) {
+        // Corrected method calls without actor name
         List<String> moviesByGenres = searchMoviesByGenres(new String[]{"Action", "science-fiction"});
         System.out.println("Movies by Genres: " + moviesByGenres);
 
         List<String> moviesByGenresAndYear = searchMoviesByGenres(new String[]{"Action", "science-fiction"}, 2012);
         System.out.println("Movies by Genres and Year: " + moviesByGenresAndYear);
 
-        List<String> moviesByGenresYearAndRating = searchMoviesByGenres(new String[]{"Action", "science-fiction"}, 2012, 8.0);
-        System.out.println("Movies by Genres, Year, and Minimum Rating: " + moviesByGenresYearAndRating);
+        // If you want to include the actor filter, specify the actor's name in the call, like so:
+        // Assuming there's an actor you want to search for:
+        String actorName = "Brad Pitt"; // Example actor name
+        List<String> moviesByGenresYearAndRating = searchMoviesByGenres(new String[]{"Action", "science-fiction"}, 2012, 8.0, actorName);
+        System.out.println("Movies by Genres, Year, Minimum Rating, and Actor: " + moviesByGenresYearAndRating);
     }
+
 }
