@@ -212,8 +212,7 @@ public class AppCLI {
             actorName = scanner.nextLine().trim();
         }
 
-        // Assuming you modify the searchMoviesByGenres method to accept actor name as an argument
-        // The method call below is an example, you need to implement or modify the method accordingly
+
         List<String> movieTitles = SearchByFilter.searchMoviesByGenres(genres, releaseYear, minimumRating, actorName);
         if (!movieTitles.isEmpty()) {
             System.out.println("Movies found: ");
