@@ -15,10 +15,13 @@ import moviesapp.UsersManager;
 public class LoginForm {
     private UsersManager usersManager;
     private Stage primaryStage;
+    private Runnable onSuccess; // Add a Runnable member to hold the success action
 
-    public LoginForm(UsersManager usersManager, Stage primaryStage) {
+    // Modify the constructor to accept the success action Runnable
+    public LoginForm(UsersManager usersManager, Stage primaryStage, Runnable onSuccess) {
         this.usersManager = usersManager;
         this.primaryStage = primaryStage;
+        this.onSuccess = onSuccess; // Store the success action
     }
 
     public Scene getScene() {
@@ -52,7 +55,7 @@ public class LoginForm {
         btn.setOnAction(e -> {
             if (usersManager.loginUser(userTextField.getText(), pwBox.getText())) {
                 actiontarget.setText("Login successful.");
-                // Here, transition to the main application scene after successful login
+                onSuccess.run(); // Execute the success action upon successful login
             } else {
                 actiontarget.setText("Login failed. Please check your username and password.");
             }

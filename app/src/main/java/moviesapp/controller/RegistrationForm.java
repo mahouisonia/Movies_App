@@ -60,9 +60,12 @@ public class RegistrationForm {
         Button loginScreenButton = new Button("Go to Login");
         gridPane.add(loginScreenButton, 1, 5);
         loginScreenButton.setOnAction(e -> {
-            LoginForm loginForm = new LoginForm(usersManager, primaryStage);
+            // Assuming you simply want to recreate the login form,
+            // you could pass a no-operation Runnable if the post-login action is not relevant here.
+            LoginForm loginForm = new LoginForm(usersManager, primaryStage, () -> {});
             primaryStage.setScene(loginForm.getScene());
         });
+
 
         return new Scene(gridPane, 350, 275);
     }
