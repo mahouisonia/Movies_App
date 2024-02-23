@@ -64,7 +64,7 @@ public class LoginForm {
         Button registrationScreenButton = new Button("Go to Register");
         gridPane.add(registrationScreenButton, 1, 5);
         registrationScreenButton.setOnAction(e -> {
-            RegistrationForm registrationForm = new RegistrationForm(usersManager, primaryStage);
+            RegistrationForm registrationForm = new RegistrationForm(usersManager, primaryStage, onSuccess);
             primaryStage.setScene(registrationForm.getScene());
         });
 

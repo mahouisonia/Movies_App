@@ -15,10 +15,13 @@ import moviesapp.UsersManager;
 public class RegistrationForm {
     private UsersManager usersManager;
     private Stage primaryStage;
+    private Runnable onSuccess; // Runnable for post-registration success action
 
-    public RegistrationForm(UsersManager usersManager, Stage primaryStage) {
+    // Constructor now accepts a Runnable for the onSuccess action
+    public RegistrationForm(UsersManager usersManager, Stage primaryStage, Runnable onSuccess) {
         this.usersManager = usersManager;
         this.primaryStage = primaryStage;
+        this.onSuccess = onSuccess;
     }
 
     public Scene getScene() {
@@ -51,7 +54,8 @@ public class RegistrationForm {
 
         btn.setOnAction(e -> {
             if (usersManager.registerUser(userTextField.getText(), pwBox.getText())) {
-                actiontarget.setText("Registration successful. Please log in.");
+                actiontarget.setText("Registration successful.");
+                onSuccess.run(); // Navigate to the main interface upon successful registration
             } else {
                 actiontarget.setText("Registration failed. Username might already exist.");
             }
@@ -60,12 +64,9 @@ public class RegistrationForm {
         Button loginScreenButton = new Button("Go to Login");
         gridPane.add(loginScreenButton, 1, 5);
         loginScreenButton.setOnAction(e -> {
-            // Assuming you simply want to recreate the login form,
-            // you could pass a no-operation Runnable if the post-login action is not relevant here.
-            LoginForm loginForm = new LoginForm(usersManager, primaryStage, () -> {});
+            LoginForm loginForm = new LoginForm(usersManager, primaryStage, onSuccess); // Use onSuccess to maintain consistent behavior
             primaryStage.setScene(loginForm.getScene());
         });
-
 
         return new Scene(gridPane, 350, 275);
     }
