@@ -34,8 +34,6 @@ public class App extends Application {
 
         // Configure the buttons' actions
         searchByNameButton.setOnAction(e -> {
-            SearchForm searchForm = new SearchForm(primaryStage);
-            primaryStage.setScene(searchForm.getScene());
         });
 
         searchByFiltersButton.setOnAction(e -> {
@@ -44,7 +42,8 @@ public class App extends Application {
         });
 
         viewFavoritesButton.setOnAction(e -> {
-            // Placeholder for showing the FavoritesForm
+            ViewFavoritesForm favoritesForm = new ViewFavoritesForm(primaryStage, usersManager);
+            primaryStage.setScene(favoritesForm.getScene());
         });
 
         logoutButton.setOnAction(e -> {
