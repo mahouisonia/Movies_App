@@ -5,8 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import moviesapp.controller.LoginForm;
-import moviesapp.controller.RegistrationForm; // Make sure to import the RegistrationForm if you're going to use it
+import moviesapp.controller.*;
 
 public class App extends Application {
     private Stage primaryStage;
@@ -35,11 +34,13 @@ public class App extends Application {
 
         // Configure the buttons' actions
         searchByNameButton.setOnAction(e -> {
-            // Placeholder for showing the SearchByNameForm
+            SearchForm searchForm = new SearchForm(primaryStage);
+            primaryStage.setScene(searchForm.getScene());
         });
 
         searchByFiltersButton.setOnAction(e -> {
-            // Placeholder for showing the SearchByFiltersForm
+            SearchByFilterForm searchByFilterForm = new SearchByFilterForm(primaryStage);
+            primaryStage.setScene(searchByFilterForm.getScene());
         });
 
         viewFavoritesButton.setOnAction(e -> {
