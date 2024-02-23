@@ -13,10 +13,12 @@ import moviesapp.UsersManager;
 public class ViewFavoritesForm {
     private Stage primaryStage;
     private UsersManager usersManager;
+    private App app;
 
-    public ViewFavoritesForm(Stage primaryStage, UsersManager usersManager) {
+    public ViewFavoritesForm(Stage primaryStage, UsersManager usersManager,App app) {
         this.primaryStage = primaryStage;
         this.usersManager = usersManager;
+        this.app = app;
     }
 
     public Scene getScene() {
@@ -31,7 +33,6 @@ public class ViewFavoritesForm {
         Button backToMainMenuButton = new Button("Back to Main Menu");
         backToMainMenuButton.setOnAction(e -> {
             // Show the main application interface
-            App app = new App();
             app.showMainApplicationInterface();
         });
 

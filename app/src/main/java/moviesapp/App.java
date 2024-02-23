@@ -47,7 +47,7 @@ public class App extends Application {
         });
 
         viewFavoritesButton.setOnAction(e -> {
-            ViewFavoritesForm favoritesForm = new ViewFavoritesForm(primaryStage, usersManager);
+            ViewFavoritesForm favoritesForm = new ViewFavoritesForm(primaryStage, usersManager,this);
             primaryStage.setScene(favoritesForm.getScene());
         });
 
