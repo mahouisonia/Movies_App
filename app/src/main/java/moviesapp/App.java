@@ -34,7 +34,12 @@ public class App extends Application {
 
         // Configure the buttons' actions
         searchByNameButton.setOnAction(e -> {
+            SearchByNameForm searchByNameForm = new SearchByNameForm(primaryStage, this::showMainApplicationInterface, usersManager);
+            primaryStage.setScene(searchByNameForm.getScene());
         });
+
+
+
 
         searchByFiltersButton.setOnAction(e -> {
             SearchByFilterForm searchByFilterForm = new SearchByFilterForm(primaryStage);
