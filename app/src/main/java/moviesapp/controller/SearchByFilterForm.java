@@ -5,12 +5,15 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import moviesapp.SearchByFilter;
+
+import java.util.List;
 
 public class SearchByFilterForm {
     private Stage primaryStage;
@@ -50,24 +53,27 @@ public class SearchByFilterForm {
         Button searchButton = new Button("Search");
         gridPane.add(searchButton, 1, 4);
 
-        TextArea resultArea = new TextArea();
-        resultArea.setEditable(false);
-        gridPane.add(resultArea, 0, 5, 2, 1);
+        // Use a VBox inside a ScrollPane for results to enable vertical scrolling
+        VBox resultBox = new VBox(5); // Spacing between elements
+        ScrollPane scrollPane = new ScrollPane(resultBox);
+        scrollPane.setFitToWidth(true);
+        gridPane.add(scrollPane, 0, 5, 2, 1);
 
         searchButton.setOnAction(e -> {
             String genreInput = genreField.getText();
-            String[] genres = genreInput.split(",");
-            Integer releaseYear = parseInputt(yearField.getText());
-            Double minimumRating = parseInput(ratingField.getText());
+            String[] genres = genreInput.isEmpty() ? new String[0] : genreInput.split(",");
+            Integer releaseYear = parseInputToInteger(yearField.getText());
+            Double minimumRating = parseInputToDouble(ratingField.getText());
 
-            String result = SearchByFilter.searchMoviesByGenres(genres, releaseYear, minimumRating).toString();
-            resultArea.setText(result);
+            List<String> results = SearchByFilter.searchMoviesByGenres(genres, releaseYear, minimumRating);
+            resultBox.getChildren().clear(); // Clear previous results
+            results.forEach(title -> resultBox.getChildren().add(new Text(title)));
         });
 
-        return new Scene(gridPane, 400, 300);
+        return new Scene(gridPane, 400, 500); // Adjusted for potentially longer list of results
     }
 
-    private Integer parseInputt(String input) {
+    private Integer parseInputToInteger(String input) {
         try {
             return Integer.parseInt(input.trim());
         } catch (NumberFormatException e) {
@@ -75,7 +81,7 @@ public class SearchByFilterForm {
         }
     }
 
-    private Double parseInput(String input) {
+    private Double parseInputToDouble(String input) {
         try {
             return Double.parseDouble(input.trim());
         } catch (NumberFormatException e) {
