@@ -137,8 +137,4 @@ public class SearchByNameForm {
         container.setAlignment(Pos.TOP_LEFT);
     }
 
-
-
-
-
 }
