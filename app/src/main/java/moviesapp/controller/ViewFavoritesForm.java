@@ -110,8 +110,17 @@ public class ViewFavoritesForm {
             refreshFavoritesDisplay(); // Refresh the display
         });
 
+        Button suggestSimilarButton = new Button("Suggest Similar");
+        suggestSimilarButton.setOnAction(e -> {
+            // Assuming movie IDs are integers; adjust accordingly if they're longs
+            int movieId = movie.getInt("id"); // Use getInt or getLong based on the actual data type
+            ViewSuggestedForm viewSuggestedForm = new ViewSuggestedForm(primaryStage, usersManager, String.valueOf(movieId), backToMainInterface);
+            primaryStage.setScene(viewSuggestedForm.getScene());
+        });
 
-        movieBox.getChildren().addAll(posterImageView, title, overview, deleteButton);
+
+
+        movieBox.getChildren().addAll(posterImageView, title, overview, deleteButton, suggestSimilarButton);
         return movieBox;
     }
 
