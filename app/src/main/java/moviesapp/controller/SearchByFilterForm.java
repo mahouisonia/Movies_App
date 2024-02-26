@@ -111,7 +111,7 @@ public class SearchByFilterForm {
         rootLayout.setCenter(scrollPane);
         rootLayout.setBottom(bottomBar);
 
-        return new Scene(rootLayout, 800, 800);
+        return new Scene(rootLayout, 600, 600);
     }
 
     private HBox createMovieDisplay(JSONObject movie) {

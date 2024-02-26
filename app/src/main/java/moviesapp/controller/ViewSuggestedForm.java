@@ -60,12 +60,12 @@ public class ViewSuggestedForm {
         rootLayout.setCenter(scrollPane);
         rootLayout.setBottom(new HBox(backButton));
 
-        return new Scene(rootLayout, 500, 500);
+        return new Scene(rootLayout, 600, 600);
     }
 
     private JSONArray fetchSimilarMovies(String movieId) {
         OkHttpClient client = new OkHttpClient();
-        String apiKey = "f1777d5efc77db9afe972a45e8263775"; // Use your actual API key
+        String apiKey = "f1777d5efc77db9afe972a45e8263775";
         String url = "https://api.themoviedb.org/3/movie/" + movieId + "/recommendations?api_key=" + apiKey + "&language=en-US&page=1";
 
         Request request = new Request.Builder()
@@ -104,7 +104,7 @@ public class ViewSuggestedForm {
             String imageUrl = "https://image.tmdb.org/t/p/w500" + posterPath;
             Image image = new Image(imageUrl, true); // Load image in the background
             posterImageView.setImage(image);
-            posterImageView.setFitHeight(150); // Adjust the height as needed
+            posterImageView.setFitHeight(200); // Adjust the height as needed
             posterImageView.setPreserveRatio(true);
             posterImageView.setSmooth(true);
         }

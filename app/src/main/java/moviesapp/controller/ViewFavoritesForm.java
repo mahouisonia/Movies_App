@@ -68,7 +68,7 @@ public class ViewFavoritesForm {
         rootLayout.setCenter(scrollPane);
         rootLayout.setBottom(buttonBar); // Add the button bar with the Back button at the bottom
 
-        return new Scene(rootLayout, 500, 500);
+        return new Scene(rootLayout, 600, 600);
     }
 
     private VBox createMovieDisplay(JSONObject movie) {
