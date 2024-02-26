@@ -90,7 +90,7 @@ public class SearchByNameForm {
         rootLayout.setCenter(scrollPane); // Assuming scrollPane is your ScrollPane setup
         rootLayout.setBottom(buttonBar); // Add the button bar with the Back button at the bottom
 
-        return new Scene(rootLayout, 500, 500);
+        return new Scene(rootLayout, 600, 600);
     }
 
 
@@ -136,9 +136,5 @@ public class SearchByNameForm {
 
         container.setAlignment(Pos.TOP_LEFT);
     }
-
-
-
-
 
 }

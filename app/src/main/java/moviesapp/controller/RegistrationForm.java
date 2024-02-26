@@ -68,6 +68,6 @@ public class RegistrationForm {
             primaryStage.setScene(loginForm.getScene());
         });
 
-        return new Scene(gridPane, 350, 275);
+        return new Scene(gridPane, 500, 500);
     }
 }

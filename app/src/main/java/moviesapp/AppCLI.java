@@ -212,13 +212,25 @@ public class AppCLI {
             actorName = scanner.nextLine().trim();
         }
 
+        String directorName = null;
+        System.out.print("Do you want to search for movies with a specific director? (yes/no): ");
+        String directorDecision = scanner.nextLine().trim();
+        if ("yes".equalsIgnoreCase(directorDecision)) {
+            System.out.print("Enter the director's name: ");
+            directorName = scanner.nextLine().trim();
+        }
 
-        List<String> movieTitles = SearchByFilter.searchMoviesByGenres(genres, releaseYear, minimumRating, actorName);
-        if (!movieTitles.isEmpty()) {
-            System.out.println("Movies found: ");
-            movieTitles.forEach(System.out::println);
+
+        List<JSONObject> results = SearchByFilter.searchMoviesByGenres(genres, releaseYear, minimumRating, actorName, directorName);
+        if (!results.isEmpty()) {
+            System.out.println("Movies found:");
+            for (JSONObject movie : results) {
+                // Extract the title from each JSONObject and print it
+                String title = movie.optString("title", "N/A");
+                System.out.println(title);
+            }
         } else {
-            System.out.println("No results found for the specified filters!" );
+            System.out.println("No results found for the specified filters!");
         }
     }
 
