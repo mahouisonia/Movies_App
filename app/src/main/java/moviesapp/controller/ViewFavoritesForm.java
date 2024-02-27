@@ -68,7 +68,7 @@ public class ViewFavoritesForm {
         rootLayout.setCenter(scrollPane);
         rootLayout.setBottom(buttonBar); // Add the button bar with the Back button at the bottom
 
-        return new Scene(rootLayout, 600, 600);
+        return new Scene(rootLayout, 900, 900);
     }
 
     private VBox createMovieDisplay(JSONObject movie) {
@@ -86,7 +86,7 @@ public class ViewFavoritesForm {
             String imageUrl = "https://image.tmdb.org/t/p/w500" + posterPath;
             Image image = new Image(imageUrl, true); // true means the image is loaded in background
             posterImageView.setImage(image);
-            posterImageView.setFitWidth(100); // Adjust as needed
+            posterImageView.setFitWidth(200); // Adjust as needed
             posterImageView.setPreserveRatio(true);
             posterImageView.setSmooth(true);
         }

@@ -21,6 +21,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.application.Application;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
 public class SearchByNameForm {
     private Stage primaryStage;
@@ -90,7 +92,7 @@ public class SearchByNameForm {
         rootLayout.setCenter(scrollPane); // Assuming scrollPane is your ScrollPane setup
         rootLayout.setBottom(buttonBar); // Add the button bar with the Back button at the bottom
 
-        return new Scene(rootLayout, 600, 600);
+        return new Scene(rootLayout, 900, 900);
     }
 
 
@@ -98,11 +100,20 @@ public class SearchByNameForm {
         container.getChildren().clear(); // Clear previous results
 
         Text title = new Text("Title: " + movie.optString("title", "N/A"));
+        title.setFont(Font.font("Arial", FontWeight.BOLD, 25)); // Set font to bold and increase size
+
         Text overviewText = new Text("Overview: " + movie.optString("overview", "N/A"));
-        overviewText.setWrappingWidth(400); // Set wrapping width for the overview text
+        overviewText.setWrappingWidth(800); // Set wrapping width for the overview text
+        overviewText.setFont(Font.font("Arial", FontWeight.NORMAL, 16)); // Set font to bold and increase size
+
         Text releaseDate = new Text("Release Date: " + movie.optString("release_date", "N/A"));
+        releaseDate.setFont(Font.font("Arial", FontWeight.NORMAL, 16)); // Set font to bold and increase size
+
         Text voteAverage = new Text("Vote Average: " + movie.optDouble("vote_average", 0));
+        voteAverage.setFont(Font.font("Arial", FontWeight.NORMAL, 16)); // Set font to bold and increase size
+
         Text popularity = new Text("Popularity: " + movie.optDouble("popularity", 0));
+        popularity.setFont(Font.font("Arial", FontWeight.NORMAL, 16)); // Set font to bold and increase size
 
         String posterPath = movie.optString("poster_path", null);
         ImageView posterImageView = new ImageView();
@@ -110,7 +121,7 @@ public class SearchByNameForm {
             String imageUrl = "https://image.tmdb.org/t/p/w500" + posterPath;
             Image image = new Image(imageUrl, true); // true means the image is loaded in background
             posterImageView.setImage(image);
-            posterImageView.setFitWidth(200); // Adjust the width as needed
+            posterImageView.setFitWidth(350); // Adjust the width as needed
             posterImageView.setPreserveRatio(true); // Preserve the aspect ratio
             posterImageView.setSmooth(true); // Apply a smoothing filter
         }
@@ -131,10 +142,14 @@ public class SearchByNameForm {
             container.getChildren().addAll(posterImageView, title, overviewContainer, releaseDate, voteAverage, popularity, addToFavoritesButton);
         } else {
             Text alreadyInFavoritesText = new Text("This movie is already in your favorites.");
+            alreadyInFavoritesText.setFill(javafx.scene.paint.Color.GREEN);
+            alreadyInFavoritesText.setFont(Font.font("Arial", FontWeight.BOLD, 16)); // Set font to bold and increase size
             container.getChildren().addAll(posterImageView, title, overviewContainer, releaseDate, voteAverage, popularity, alreadyInFavoritesText);
         }
 
         container.setAlignment(Pos.TOP_LEFT);
     }
+
+
 
 }

@@ -21,23 +21,23 @@ public class SearchByFilter {
 
     static {
         genreMap.put("action", 28);
-        genreMap.put("aventure", 12);
+        genreMap.put("adventure", 12);
         genreMap.put("animation", 16);
-        genreMap.put("comédie", 35);
+        genreMap.put("comedy", 35);
         genreMap.put("crime", 80);
-        genreMap.put("documentaire", 99);
-        genreMap.put("drame", 18);
-        genreMap.put("famille", 10751);
-        genreMap.put("fantaisie", 14);
-        genreMap.put("histoire", 36);
-        genreMap.put("horreur", 27);
-        genreMap.put("musique", 10402);
-        genreMap.put("mystère", 9648);
+        genreMap.put("documentary", 99);
+        genreMap.put("drama", 18);
+        genreMap.put("family", 10751);
+        genreMap.put("fantasy", 14);
+        genreMap.put("history", 36);
+        genreMap.put("horror", 27);
+        genreMap.put("music", 10402);
+        genreMap.put("mystery", 9648);
         genreMap.put("romance", 10749);
-        genreMap.put("science-fiction", 878);
-        genreMap.put("téléfilm", 10770);
+        genreMap.put("science fiction", 878);
+        genreMap.put("tv movie", 10770);
         genreMap.put("thriller", 53);
-        genreMap.put("guerre", 10752);
+        genreMap.put("war", 10752);
         genreMap.put("western", 37);
     }
 
@@ -104,10 +104,10 @@ public class SearchByFilter {
         try {
             String actorId = actorName != null ? findActorIdByName(actorName) : null;
             String directorId = directorName != null ? findDirectorIdByName(directorName) : null;
-//            if (actorName != null && actorId == null) {
-//                System.out.println("Actor not found");
-//                return movies;
-//            }
+            if ((actorName != "" && actorName!=null && actorId == null) || (directorName != "" && directorName!=null && directorId == null)) {
+                System.out.println("Actor not found");
+                return movies;
+            }
 
             OkHttpClient client = new OkHttpClient();
             String genreIds = "";
