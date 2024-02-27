@@ -40,7 +40,7 @@ public class AppCLI {
 
     private static void handleUserAuthentication(String choice, Scanner scanner) {
         switch (choice) {
-            case "1": // Register
+            case "1":
                 System.out.print("Enter username: ");
                 String username = scanner.nextLine();
                 System.out.print("Enter password: ");
@@ -203,7 +203,6 @@ public class AppCLI {
             }
         }
 
-        // New section for actor name
         String actorName = null;
         System.out.print("Do you want to search for movies with a specific actor? (yes/no): ");
         String actorDecision = scanner.nextLine().trim();
@@ -225,7 +224,6 @@ public class AppCLI {
         if (!results.isEmpty()) {
             System.out.println("Movies found:");
             for (JSONObject movie : results) {
-                // Extract the title from each JSONObject and print it
                 String title = movie.optString("title", "N/A");
                 System.out.println(title);
             }

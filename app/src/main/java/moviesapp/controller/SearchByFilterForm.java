@@ -50,25 +50,25 @@ public class SearchByFilterForm {
         TextField genreField = new TextField();
         gridPane.add(genreField, 1, 1);
 
-        Label yearLabel = new Label("Enter release year (optional):");
+        Label yearLabel = new Label("Enter release year:");
         gridPane.add(yearLabel, 0, 2);
 
         TextField yearField = new TextField();
         gridPane.add(yearField, 1, 2);
 
-        Label ratingLabel = new Label("Enter minimum rating (optional):");
+        Label ratingLabel = new Label("Enter minimum rating:");
         gridPane.add(ratingLabel, 0, 3);
 
         TextField ratingField = new TextField();
         gridPane.add(ratingField, 1, 3);
 
-        Label actorLabel = new Label("Enter actor's name (optional):");
+        Label actorLabel = new Label("Enter actor's name:");
         gridPane.add(actorLabel, 0, 4);
 
         TextField actorField = new TextField();
         gridPane.add(actorField, 1, 4);
 
-        Label directorLabel = new Label("Enter director's name (optional):");
+        Label directorLabel = new Label("Enter director's name :");
         gridPane.add(directorLabel, 0, 5); // Note the row index is now 5
 
         TextField directorField = new TextField();
@@ -111,7 +111,7 @@ public class SearchByFilterForm {
         rootLayout.setCenter(scrollPane);
         rootLayout.setBottom(bottomBar);
 
-        return new Scene(rootLayout, 600, 600);
+        return new Scene(rootLayout, 900, 900);
     }
 
     private HBox createMovieDisplay(JSONObject movie) {

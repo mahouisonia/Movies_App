@@ -60,7 +60,7 @@ public class ViewSuggestedForm {
         rootLayout.setCenter(scrollPane);
         rootLayout.setBottom(new HBox(backButton));
 
-        return new Scene(rootLayout, 600, 600);
+        return new Scene(rootLayout, 800, 800);
     }
 
     private JSONArray fetchSimilarMovies(String movieId) {
@@ -104,7 +104,7 @@ public class ViewSuggestedForm {
             String imageUrl = "https://image.tmdb.org/t/p/w500" + posterPath;
             Image image = new Image(imageUrl, true); // Load image in the background
             posterImageView.setImage(image);
-            posterImageView.setFitHeight(200); // Adjust the height as needed
+            posterImageView.setFitHeight(300);
             posterImageView.setPreserveRatio(true);
             posterImageView.setSmooth(true);
         }
